@@ -1,0 +1,418 @@
+/* GreenGuard — global tokens (matches the user's drawings exactly) */
+/* ─── Light mode override (wrapper-scoped, applies to ALL screens) ─── */
+.ggwrap-screen.light .gg-screen,
+.ggwrap-screen.light .gg-screen .gg-body { background: #f4f4f6; color: #1c1c1e; }
+.ggwrap-screen.light .gg-screen.maroon,
+.ggwrap-screen.light .gg-screen.cigaretteMaroon { background: #f4f4f6; color: #1c1c1e; }
+.ggwrap-screen.light .gg-header,
+.ggwrap-screen.light .gg-header .gg-title { color: #1c1c1e; }
+.ggwrap-screen.light .gg-iconbtn { color: #1c1c1e; }
+.ggwrap-screen.light .gg-iconbtn svg { stroke: #1c1c1e; }
+.ggwrap-screen.light .gg-back { color: #1c1c1e; }
+.ggwrap-screen.light .gg-back svg { stroke: #1c1c1e; }
+.ggwrap-screen.light .gg-card,
+.ggwrap-screen.light .gg-card.maroon { background: #ffffff; color: #1c1c1e; border: 1px solid rgba(0,0,0,0.06); box-shadow: 0 4px 14px rgba(0,0,0,0.05); }
+.ggwrap-screen.light .gg-tile { background: #ffffff; color: #1c1c1e; border: 1px solid rgba(0,0,0,0.06); }
+.ggwrap-screen.light .gg-tile .label { color: #1c1c1e; }
+.ggwrap-screen.light .gg-guide-tile { background: #ffffff; color: #1c1c1e; border: 1px solid rgba(0,0,0,0.06); }
+.ggwrap-screen.light .gg-guide-tile .label { color: #1c1c1e; }
+.ggwrap-screen.light .gg-divider { background: rgba(0,0,0,0.10); }
+.ggwrap-screen.light .gg-input { background: #ffffff; color: #1c1c1e; border-color: rgba(0,0,0,0.12); }
+.ggwrap-screen.light .gg-input::placeholder { color: rgba(0,0,0,0.4); }
+.ggwrap-screen.light .gg-search { background: #ffffff; color: #1c1c1e; border: 1px solid rgba(0,0,0,0.08); }
+.ggwrap-screen.light .gg-search input { color: #1c1c1e; }
+.ggwrap-screen.light .gg-search input::placeholder { color: rgba(0,0,0,0.4); }
+.ggwrap-screen.light .gg-tabbar,
+.ggwrap-screen.light .gg-tabbar.maroon { background: rgba(255,255,255,0.95); border-top: 1px solid rgba(0,0,0,0.08); }
+.ggwrap-screen.light .gg-tab { color: rgba(0,0,0,0.45); }
+.ggwrap-screen.light .gg-tab.active { color: #1c1c1e; }
+.ggwrap-screen.light .gg-sheet { background: #ffffff; color: #1c1c1e; }
+.ggwrap-screen.light .gg-sheet .grabber { background: rgba(0,0,0,0.25); }
+.ggwrap-screen.light .gg-seg { background: #e8e8ec; }
+.ggwrap-screen.light .gg-seg button { color: rgba(0,0,0,0.55); }
+.ggwrap-screen.light .gg-seg button.active { background: #ffffff; color: #1c1c1e; }
+.ggwrap-screen.light .gg-toggle { background: rgba(0,0,0,0.15); }
+.ggwrap-screen.light { --muted: rgba(0,0,0,0.55); --muted-2: rgba(0,0,0,0.5); --text: #1c1c1e; --text-2: #3a3a3c; --text-3: rgba(0,0,0,0.55); --hairline: rgba(0,0,0,0.10); }
+
+:root {
+  --bg: #1c1c1e;
+  --bg-2: #2c2c2e;       /* card surface on dark */
+  --bg-3: #3a3a3c;
+  --bg-profile: #3a1f1f; /* deep maroon used on profile + cigarette guide */
+  --bg-profile-2: #4a2828;
+  --bg-cigarette: #3a1f1f;
+
+  --text: #ffffff;
+  --text-2: #d8d8d8;
+  --text-3: rgba(255,255,255,0.55);
+  --muted: rgba(255,255,255,0.55);
+  --muted-2: rgba(255,255,255,0.5);
+  --hairline: rgba(255,255,255,0.14);
+
+  --teal: #4aa3b3;       /* REPORT RISK */
+  --red:  #d65656;       /* REPORT FIRE / emergency */
+  --red-2:#e26b6b;
+  --orange:#e07b3a;
+  --green:#65a861;
+  --yellow:#e0b03a;
+  --safety-green: #6cc06c;
+
+  --map-red: #d44a3a;
+  --map-orange: #e87b34;
+  --map-green: #4faa56;
+
+  --radius-card: 18px;
+  --radius-button: 14px;
+
+  --font: -apple-system, "SF Pro Text", "SF Pro Display", system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  background: #0a0a0c;
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-x: hidden;
+}
+
+/* iPhone screen content rules */
+.gg-screen {
+  position: absolute;
+  inset: 0;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  color: var(--text);
+  font-family: var(--font);
+  overflow: hidden;
+}
+.gg-screen.maroon { background: var(--bg-profile); }
+.gg-screen.cigaretteMaroon { background: var(--bg-cigarette); }
+
+/* top header (status-bar safe) — matches user drawings: hamburger left, big title centered */
+.gg-header {
+  padding-top: 58px; /* below dynamic island */
+  padding-bottom: 14px;
+  padding-left: 20px;
+  padding-right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.gg-header .gg-title {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  flex: 1;
+  text-align: center;
+  margin-right: 32px; /* offset for the hamburger so title visually-centers */
+}
+.gg-header .gg-title.left { text-align: left; margin-right: 0; padding-left: 4px; }
+
+.gg-iconbtn {
+  width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+  color: white;
+  border: none; background: transparent; cursor: pointer; padding: 0;
+  border-radius: 8px;
+  transition: background .15s;
+}
+.gg-iconbtn:active { background: rgba(255,255,255,0.08); }
+
+.gg-back {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 22px; font-weight: 800;
+  letter-spacing: -0.3px;
+  color: white;
+  background: none; border: none; padding: 0;
+  cursor: pointer;
+  flex: 1;
+  text-align: left;
+}
+.gg-back svg { flex-shrink: 0; }
+
+/* scrollable body */
+.gg-body {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 4px 18px 110px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.gg-body::-webkit-scrollbar { display: none; }
+
+/* card */
+.gg-card {
+  background: var(--bg-2);
+  border-radius: var(--radius-card);
+  padding: 18px;
+}
+.gg-card.maroon { background: var(--bg-profile-2); }
+
+/* tab bar (matches user drawings: home / book / profile, plain white icons) */
+.gg-tabbar {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 84px;
+  background: rgba(28,28,30,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 0.5px solid rgba(255,255,255,0.08);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-around;
+  padding-top: 10px;
+  z-index: 30;
+}
+.gg-tabbar.maroon { background: rgba(58,31,31,0.92); }
+.gg-tab {
+  background: none; border: none; padding: 6px 12px;
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  color: rgba(255,255,255,0.55); cursor: pointer;
+  font-family: var(--font); font-size: 10px;
+  transition: color .15s, transform .15s;
+  position: relative;
+}
+.gg-tab.active { color: white; }
+.gg-tab:active { transform: scale(0.92); }
+.gg-tab .gg-tab-ring {
+  position: absolute;
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  background: rgba(101,168,97,0.28);
+  border: 1px solid rgba(101,168,97,0.55);
+  z-index: -1;
+  animation: gg-tab-ring-in .25s ease-out;
+}
+@keyframes gg-tab-ring-in {
+  from { transform: translateX(-50%) scale(0.5); opacity: 0; }
+  to   { transform: translateX(-50%) scale(1); opacity: 1; }
+}
+
+/* big primary buttons (REPORT RISK / REPORT FIRE) */
+.gg-bigbtn {
+  width: 100%;
+  border-radius: 14px;
+  padding: 14px 18px;
+  border: none;
+  color: white;
+  font-family: var(--font);
+  font-weight: 800;
+  font-size: 20px;
+  letter-spacing: 0.3px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+  transition: transform .12s, filter .12s;
+}
+.gg-bigbtn:active { transform: scale(0.985); filter: brightness(0.95); }
+.gg-bigbtn .sub { font-size: 12px; font-weight: 500; opacity: 0.85; letter-spacing: 0; }
+.gg-bigbtn .row { display: flex; align-items: center; gap: 10px; }
+.gg-bigbtn.teal { background: var(--teal); }
+.gg-bigbtn.red  { background: var(--red); }
+
+/* small alert tile in Recent Local Alerts */
+.gg-tile {
+  background: var(--bg-2);
+  border-radius: 14px;
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform .12s, background .15s;
+  min-height: 124px;
+}
+.gg-tile:active { transform: scale(0.97); background: var(--bg-3); }
+.gg-tile .label { font-size: 13px; line-height: 1.25; color: white; font-weight: 500; }
+
+/* prevention guide tile (large — matches user drawing) */
+.gg-guide-tile {
+  background: var(--bg-2);
+  border-radius: 18px;
+  padding: 22px 14px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  text-align: center;
+  cursor: pointer;
+  height: 188px;
+  transition: transform .12s, background .15s;
+}
+.gg-guide-tile:active { transform: scale(0.97); background: var(--bg-3); }
+.gg-guide-tile .label {
+  font-size: 14px; font-weight: 800; letter-spacing: 0.4px; color: white;
+  text-transform: uppercase; line-height: 1.2;
+}
+
+/* page-enter animation */
+@keyframes gg-enter {
+  from { opacity: 0; transform: translateX(20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes gg-back-enter {
+  from { opacity: 0; transform: translateX(-20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.gg-screen.enter { animation: gg-enter .28s ease-out; }
+.gg-screen.back-enter { animation: gg-back-enter .28s ease-out; }
+
+@keyframes gg-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.gg-up { animation: gg-up .28s ease-out; }
+
+@keyframes gg-fade { from { opacity: 0; } to { opacity: 1; } }
+.gg-fade { animation: gg-fade .35s ease-out; }
+
+/* hairline divider */
+.gg-divider {
+  height: 0.5px;
+  background: rgba(255,255,255,0.18);
+  margin: 14px 0;
+}
+
+/* small chip / tag */
+.gg-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+}
+.gg-chip.high { background: var(--red); color: white; }
+.gg-chip.medium { background: var(--orange); color: white; }
+.gg-chip.low { background: var(--safety-green); color: white; }
+
+/* sheet (bottom sheet) */
+.gg-sheet {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  background: var(--bg-2);
+  border-radius: 22px 22px 0 0;
+  padding: 12px 18px 28px;
+  z-index: 40;
+  animation: gg-up .3s ease-out;
+}
+.gg-sheet .grabber {
+  width: 40px; height: 4px; background: rgba(255,255,255,0.4);
+  border-radius: 2px; margin: 0 auto 12px;
+}
+
+/* form inputs */
+.gg-input {
+  width: 100%;
+  background: var(--bg-2);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 14px 16px;
+  color: white;
+  font-family: var(--font);
+  font-size: 15px;
+  outline: none;
+  transition: border-color .15s;
+}
+.gg-input:focus { border-color: var(--teal); }
+.gg-input::placeholder { color: rgba(255,255,255,0.4); }
+
+/* search bar */
+.gg-search {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--bg-2);
+  border-radius: 12px;
+  padding: 11px 14px;
+  margin: 0 0 14px;
+}
+.gg-search input {
+  flex: 1; background: none; border: none; outline: none; color: white;
+  font-family: var(--font); font-size: 15px;
+}
+.gg-search input::placeholder { color: rgba(255,255,255,0.45); }
+
+/* segmented control */
+.gg-seg {
+  display: flex;
+  background: var(--bg-2);
+  border-radius: 10px;
+  padding: 3px;
+  gap: 2px;
+}
+.gg-seg button {
+  flex: 1;
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.6);
+  font-family: var(--font);
+  font-weight: 600;
+  font-size: 13px;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all .15s;
+}
+.gg-seg button.active {
+  background: var(--bg-3);
+  color: white;
+}
+
+/* toggle */
+.gg-toggle {
+  width: 50px; height: 30px; border-radius: 15px;
+  background: rgba(120,120,128,0.32); position: relative;
+  cursor: pointer; transition: background .2s; flex-shrink: 0;
+}
+.gg-toggle.on { background: var(--safety-green); }
+.gg-toggle::after {
+  content: ''; position: absolute; top: 2px; left: 2px;
+  width: 26px; height: 26px; background: white; border-radius: 50%;
+  transition: transform .2s;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+.gg-toggle.on::after { transform: translateX(20px); }
+
+/* ripple/pulse on a hot point */
+@keyframes gg-pulse {
+  0%  { transform: scale(0.6); opacity: 0.85; }
+  100%{ transform: scale(2.6); opacity: 0; }
+}
+.gg-pulse { animation: gg-pulse 1.6s ease-out infinite; }
+
+/* shake (for FIRE button when hovered to invite urgency) */
+@keyframes gg-shake {
+  0%,100% { transform: translateX(0); }
+  20% { transform: translateX(-1.5px); }
+  40% { transform: translateX(1.5px); }
+  60% { transform: translateX(-1px); }
+  80% { transform: translateX(1px); }
+}
+
+/* needle gauge wobble */
+@keyframes gg-needle {
+  0%,100% { transform: rotate(var(--angle)); }
+  50% { transform: rotate(calc(var(--angle) + 2deg)); }
+}
+
+/* rising marker on map */
+@keyframes gg-rise {
+  from { transform: translate(-50%, -40%) scale(0.6); opacity: 0; }
+  to   { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}

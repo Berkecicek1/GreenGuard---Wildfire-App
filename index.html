@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>GreenGuard — iOS App</title>
+<link rel="stylesheet" href="app.css"/>
+<style>
+  body { background: #0a0a0c; }
+  .gg-stage {
+    width: 100%;
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    padding: 30px 0;
+  }
+  /* tab bar wrapper inside the device */
+  .ggwrap-screen { position: relative; width: 100%; height: 100%; }
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body style="font-family: &quot;SF Pro Text&quot;">
+<div id="root" class="gg-stage"></div>
+
+<script type="text/babel" src="ios-frame.jsx"></script>
+<script type="text/babel" src="icons.jsx"></script>
+<script type="text/babel" src="screens-home.jsx"></script>
+<script type="text/babel" src="screens-map.jsx"></script>
+<script type="text/babel" src="screens-guides.jsx"></script>
+<script type="text/babel" src="screens-misc.jsx"></script>
+
+<script type="text/babel">
+const { useState, useEffect } = React;
+
+function TabBar({ tab, go, maroon }) {
+  const Tab = ({ id, label, IconC, target }) => (
+    <button className={`gg-tab ${tab===id ? 'active' : ''}`} onClick={() => go(target || id)}>
+      {tab===id && <span className="gg-tab-ring"/>}
+      <IconC active={tab===id}/>
+      <span>{label}</span>
+    </button>
+  );
+  return (
+    <div className={`gg-tabbar ${maroon ? 'maroon' : ''}`}>
+      <Tab id="home"    label="Home"    IconC={Icon.TabHome}/>
+      <Tab id="map"     label="Map"     IconC={Icon.TabMap}/>
+      <Tab id="guides"  label="Guides"  IconC={Icon.TabBook}/>
+      <Tab id="profile" label="Profile" IconC={Icon.TabProfile}/>
+    </div>
+  );
+}
+
+function App() {
+  const [stack, setStack] = useState([{ s: 'splash', p: null }]);
+  const cur = stack[stack.length - 1];
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [search, setSearch] = useState('');
+  const [dark, setDark] = useState(true);
+  const [contacts, setContacts] = useState([
+    { label: 'Emergency\nCall Center', value: '112', icon: <Icon.Siren size={26}/> },
+    { label: 'Forest Fire\nDepartment', value: '177', icon: <Icon.Truck size={28}/> },
+  ]);
+
+  // navigate
+  const go = (s, p = null, back = false) => {
+    if (back) {
+      setStack(prev => prev.length > 1 ? prev.slice(0, -1) : [{ s, p }]);
+    } else {
+      setStack(prev => [...prev, { s, p }]);
+    }
+    setMenuOpen(false);
+  };
+
+  const user = { name: 'Eren Demir' };
+
+  // tab to show in tab bar
+  const tabFor = {
+    home: 'home',
+    map: 'map',
+    guides: 'guides', guide_cigarette: 'guides', guide_hidden: 'guides', guide_glass: 'guides', guide_campfire: 'guides',
+    profile: 'profile', settings: 'profile',
+  }[cur.s];
+
+  // map tab tap → screen
+  const tapTab = (tab) => {
+    if (tab === 'home') go('home');
+    else if (tab === 'map') go('map');
+    else if (tab === 'guides') go('guides');
+    else if (tab === 'profile') go('profile');
+  };
+
+  const showTab = !!tabFor;
+  const maroon = false;
+
+  // pick screen
+  let screen;
+  switch (cur.s) {
+    case 'splash':       screen = <SplashScreen go={go}/>; break;
+    case 'onboarding':   screen = <OnboardingScreen go={go}/>; break;
+    case 'login':        screen = <LoginScreen go={go}/>; break;
+    case 'signup':       screen = <SignUpScreen go={go}/>; break;
+    case 'home':         screen = <HomeScreen go={go} openMenu={() => setMenuOpen(true)} riskValue={72}/>; break;
+    case 'map':          screen = <MapScreen go={go} openMenu={() => setMenuOpen(true)}/>; break;
+    case 'guides':       screen = <GuidesScreen go={go} search={search} setSearch={setSearch}/>; break;
+    case 'guide_cigarette': screen = <GuideDetail go={go} kind="cigarette"/>; break;
+    case 'guide_hidden':    screen = <GuideDetail go={go} kind="hidden"/>; break;
+    case 'guide_glass':     screen = <GuideDetail go={go} kind="glass"/>; break;
+    case 'guide_campfire':  screen = <GuideDetail go={go} kind="campfire"/>; break;
+    case 'reportRisk':   screen = <ReportRiskScreen go={go}/>; break;
+    case 'reportForm':   screen = <ReportFormScreen go={go} params={cur.p}/>; break;
+    case 'reportFire':   screen = <ReportFireScreen go={go}/>; break;
+    case 'reportSuccess':screen = <ReportSuccessScreen go={go} params={cur.p}/>; break;
+    case 'alertDetail':  screen = <AlertDetailScreen go={go} params={cur.p}/>; break;
+    case 'profile':      screen = <ProfileScreen go={go} openMenu={() => setMenuOpen(true)} contacts={contacts} setContacts={setContacts}/>; break;
+    case 'settings':     screen = <SettingsScreen go={go} dark={dark} setDark={setDark}/>; break;
+    case 'notifications':screen = <NotificationsScreen go={go}/>; break;
+    case 'about':        screen = <AboutScreen go={go}/>; break;
+    case 'editProfile':  screen = <EditProfileScreen go={go}/>; break;
+    case 'privacy':      screen = <PrivacyScreen go={go}/>; break;
+    default: screen = <HomeScreen go={go} openMenu={() => setMenuOpen(true)} riskValue={72}/>;
+  }
+
+  return (
+    <IOSDevice dark width={402} height={874}>
+      <div className={`ggwrap-screen ${dark ? '' : 'light'}`} data-screen-label={`${cur.s}`}>
+        {screen}
+        <SideMenu open={menuOpen} close={() => setMenuOpen(false)} go={go} user={user}/>
+        {showTab && <TabBar tab={tabFor} go={tapTab} maroon={maroon}/>}
+      </div>
+    </IOSDevice>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
