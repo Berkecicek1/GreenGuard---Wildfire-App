@@ -90,6 +90,7 @@ function HomeScreen({ go, openMenu, riskValue }) {
       <div className="gg-header">
         <button className="gg-iconbtn" onClick={openMenu}><Icon.Hamburger/></button>
         <div className="gg-title">Home Dashboard</div>
+        <img src="assets/logo-transparent.png" alt="GreenGuard" style={{width: 36, height: 36, objectFit:'contain', flexShrink: 0}}/>
       </div>
       <div className="gg-body">
         {/* Risk Meter card */}
@@ -117,7 +118,7 @@ function HomeScreen({ go, openMenu, riskValue }) {
           <span className="sub">(Glass, Campfire, Smoke)</span>
         </button>
         <button className="gg-bigbtn red" style={{marginTop: 12}} onClick={() => go('reportFire')}>
-          <span className="row"><Icon.FireSiren size={32}/><span>REPORT FIRE</span></span>
+          <span className="row"><Icon.FireSiren size={42}/><span>REPORT FIRE</span></span>
           <span className="sub">(Report)</span>
         </button>
 

@@ -13,8 +13,9 @@ const Icon = {
   ),
   Settings: ({ size = 26, color = 'white' }) => (
     <svg width={size} height={size} viewBox="0 0 26 26" fill="none">
-      <circle cx="13" cy="13" r="3" stroke={color} strokeWidth="2"/>
-      <path d="M13 1.5v3M13 21.5v3M1.5 13h3M21.5 13h3M4.9 4.9l2.1 2.1M19 19l2.1 2.1M4.9 21.1L7 19M19 7l2.1-2.1" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+      <path d="M13 1.2l2.1 2.7 3.3-.8 1 3.3 3.2 1.2-.8 3.3 2.2 2.6-2.2 2.6.8 3.3-3.2 1.2-1 3.3-3.3-.8L13 24.8 10.9 22l-3.3.8-1-3.3-3.2-1.2.8-3.3L2 12.4l2.2-2.6-.8-3.3 3.2-1.2 1-3.3 3.3.8L13 1.2z"
+        stroke={color} strokeWidth="1.8" strokeLinejoin="round"/>
+      <circle cx="13" cy="13" r="3.6" stroke={color} strokeWidth="1.8"/>
     </svg>
   ),
 

@@ -85,7 +85,7 @@ function OnboardingScreen({ go }) {
       body: 'See live danger levels for your exact location — temperature, humidity, and wind speed combined into one clear meter.' },
     { icon: <Icon.Bell size={64}/>, title: 'Instant Local Alerts',
       body: 'Get notified the moment risks are reported nearby. Smoke, glass waste, unattended campfires — never miss a sign.' },
-    { icon: <Icon.Flame size={64}/>, title: 'Report. Protect. Together.',
+    { icon: <Icon.Flame size={110}/>, title: 'Report to Protect',
       body: 'Tap once to report fire or risk. Your alerts help protect your community and the forests you love.' },
   ];
   const s = slides[step];
